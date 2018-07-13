@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <div class="shopBox">
+        <ul class="list">
+            <!-- <li>
+                        <a href="##">9.5折</a>
+                        <div class="pic">
+                            <img src="img/1.jpg">
+                            <span></span>
+                        </div>
+                        <dl>
+                            <dt class="shop_tp">小米电视455英寸</dt>
+                            <dd class="detail">4.9mm.极超薄高端旗舰电视</dd>
+                            <dd class="price">
+                                <i>3699元</i>
+                                <del>4499元</del>
+                            </dd>
+                        </dl>
+                    </li> -->
+
+        </ul>
+    </div>
+    <div class="mainBox">
+        <div class="iTop"></div>
+        <div class="text">
+            <p>是否删除该商品</p>
+        </div>
+        <div class="tip">
+            <a class="delete">删除</a>
+            <a class="no">取消</a>
+        </div>
+    </div>
+</body>
+
+</html>
+<script src="js/jquery.js"></script>
+<script>
+    var list = document.querySelector(".list");
+    function ajax(parmas) {
+        var xhr = new XMLHttpRequest;
+        xhr.open(parmas.method, parmas.url, true);
+        xhr.send(null);
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                var json = xhr.responseText;
+                json = JSON.parse(json);
+                parmas.success(json)
+                var del = document.querySelectorAll(".del");
+                var mainBox = document.querySelector(".mainBox");
+                var declick = document.querySelector(".delete");
+                var no = document.querySelector(".no");
+                var index;;
+                for (var i = 0; i < del.length; i++) {
+                    del[i].index = i;
+                    
+                    del[i].onclick = function () {
+                        console.log(i)
+                        mainBox.style.display = "block";
+                        // declick.onclick=function(){
+                        //     console.log('11')
+                        //     console.log(index);
+                        // }
+                    }
+                   
+                }              
+                no.onclick = function(){
+                    mainBox.style.display = "none";
+                }
+                mainBox.onmousedown=function(ev){
+                    var ev = ev || window.event;
+			var target = ev.target||ev.srcElement;
+			if(target.tagName == "DIV" && target.className == "iTop"){
+				// target.style.left=
+                target.style.left=ev.clientX;
+                target.style.top=ev.clientY;
+                console.log(target)
+            }
+                }
+            }
+        }
+    }
+    var parmas = {
+        method: "GET",
+        url: "ajax.json",
+        data: "null",
+        data_Type: "json",
+        success: function (json) {
+            console.log(json)
+            for (var i = 0; i < json.length; i++) {
+                var str = ` <li data-url =${json[i].id}>
+                <a href="##">${json[i].tip}</a>
+                <div class="pic">
+                    <img src=${json[i].img}>
+                    <span></span>
+                </div>
+                <dl>
+                    <dt class="shop_tp">${json[i].meg}</dt>
+                    <dd class="detail">${json[i].like}</dd>
+                    <dd class="price">
+                        <i>${json[i].price}</i>
+                        <del>${json[i].del}</del>
+                    </dd>
+                    <dd  class="del"><a>删除</a></dd>
+                </dl>
+                <div class="orange"><div>
+            </li>`;
+                // console.log(str)
+                list.innerHTML += str;
+            }
+
+
+        }
+
+    }
+    ajax(parmas)
+
+</script>
