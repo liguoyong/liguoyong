@@ -59,6 +59,7 @@
                 var del = document.querySelectorAll(".del");
                 var mainBox = document.querySelector(".mainBox");
                 var declick = document.querySelector(".delete");
+                var iTop = document.querySelector(".iTop");
                 var no = document.querySelector(".no");
                 var index;;
                 for (var i = 0; i < del.length; i++) {
@@ -67,23 +68,28 @@
                     del[i].onclick = function () {
                         console.log(i)
                         mainBox.style.display = "block";
-                        // declick.onclick=function(){
-                        //     console.log('11')
-                        //     console.log(index);
-                        // }
+                        declick.onclick=function(){
+                            mainBox.style.display = "none";
+                        }
                     }
                    
                 }              
                 no.onclick = function(){
                     mainBox.style.display = "none";
                 }
-                mainBox.onmousedown=function(ev){
+            mainBox.onmousedown=function(ev){
                     var ev = ev || window.event;
 			var target = ev.target||ev.srcElement;
 			if(target.tagName == "DIV" && target.className == "iTop"){
 				// target.style.left=
-                target.style.left=ev.clientX;
-                target.style.top=ev.clientY;
+                // target.style.left=ev.clientX;
+                // target.style.top=ev.clientY;
+                var ev = ev||event;  
+                        var l = ev.clientX;  
+                        var t = ev.clientY;  
+                      
+                        mainBox.style.left = l+"px";  
+                        mainBox.style.top = t+"px";  
                 console.log(target)
             }
                 }
@@ -104,7 +110,7 @@
                     <img src=${json[i].img}>
                     <span></span>
                 </div>
-                <dl>
+                <dl class="dbox">
                     <dt class="shop_tp">${json[i].meg}</dt>
                     <dd class="detail">${json[i].like}</dd>
                     <dd class="price">
@@ -117,6 +123,7 @@
             </li>`;
                 // console.log(str)
                 list.innerHTML += str;
+                new jq();
             }
 
 
@@ -124,5 +131,18 @@
 
     }
     ajax(parmas)
-
+    function jq(){
+        var dbox = $('.dbox');
+        var orange = $(".orange");
+        return {
+            init:function(){
+                this.aclick();
+            },
+            aclick:function(){
+                dbox.on("mouseover",function(){
+                    orange.css("display","block");
+                }) 
+            }
+        }
+    }
 </script>
